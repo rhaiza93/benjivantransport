@@ -1,0 +1,332 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------- THEME ---------- */
+:root {
+  --gold: #c8a951;
+  --bg: #0b0b0b;
+}
+
+html, body {
+  scroll-behavior: smooth;
+  background: var(--bg);
+  color: #f5f5f5;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto;
+}
+
+* { transition: all .3s ease-in-out; }
+
+/* ---------- LAYOUT ---------- */
+.section { @apply max-w-6xl mx-auto px-6; }
+
+/* ---------- HEADER LUXE ---------- */
+header {
+  position: fixed;
+  top: 0;
+  inset-inline: 0;
+  z-index: 50;
+  background: rgba(10, 10, 10, 0.75);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 215, 130, 0.08);
+  transition: background .4s ease, box-shadow .4s ease;
+}
+
+header a {
+  position: relative;
+}
+
+header a:hover span::after {
+  width: 100%;
+}
+
+header nav a span::after {
+  content: "";
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--gold);
+  transition: width 0.3s ease;
+}
+
+/* ---------- BUTTONS ---------- */
+.btn-primary {
+  @apply inline-flex items-center gap-2 font-medium rounded-xl px-5 py-3;
+  background: var(--gold);
+  color: #111;
+  box-shadow: 0 0 12px rgba(200,169,81,0.3);
+}
+.btn-primary:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 0 20px rgba(200,169,81,0.45);
+}
+
+.btn-ghost {
+  @apply inline-flex items-center gap-2 border rounded-xl px-5 py-3;
+  @apply border-zinc-700 text-zinc-200 hover:bg-zinc-800 hover:border-[var(--gold)] hover:text-[var(--gold)];
+}
+
+/* ---------- CARDS ---------- */
+.card { @apply bg-zinc-900/60 border border-zinc-800 rounded-2xl overflow-hidden; }
+.card-body { @apply p-6; }
+
+/* ---------- BADGES ---------- */
+.badge { @apply flex items-center gap-2 px-3 py-2 bg-zinc-800/60 rounded-full text-xs text-zinc-300; }
+
+/* ---------- TITRES LUXE ---------- */
+.luxury-title {
+  background: linear-gradient(90deg,#f5e8b8,#bca052,#f5e8b8);
+  background-size: 200% auto;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  animation: shimmerGold 8s linear infinite;
+}
+.luxury-title:hover { animation: shimmerGoldFast 3s linear infinite; }
+
+@keyframes shimmerGold {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes shimmerGoldFast {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+/* ---------- IMAGE HALOS ---------- */
+
+/* halo doux (flotte, prestations secondaires) */
+.img-halo {
+  box-shadow: 0 0 22px rgba(200,169,81,0.22), 0 0 38px rgba(200,169,81,0.12);
+  border-radius: 1rem;
+}
+
+/* halo accentué (Europe, 24/7, chauffeur, HDG) */
+.img-halo-strong {
+  box-shadow: 0 0 36px rgba(200,169,81,0.32), 0 0 70px rgba(200,169,81,0.18);
+  border-radius: 1.5rem;
+}
+
+/* pas de halo pour les avis */
+.card img.img-halo,
+.card img.img-halo-strong { box-shadow: none; }
+
+/* ---------- SEPARATEUR ---------- */
+.separator-gold {
+  height:1px;
+  margin:3rem auto;
+  background:linear-gradient(90deg,transparent,rgba(200,169,81,.7),transparent);
+}
+
+/* ---------- BG LUXE ---------- */
+.bg-luxury {
+  background: radial-gradient(circle at 50% 50%,#1a1a1a,#000);
+  animation: shimmer 20s ease-in-out infinite alternate;
+}
+@keyframes shimmer {
+  0%{background-position:50% 50%}
+  100%{background-position:70% 60%}
+}
+
+/* ---------- LOGO ---------- */
+.logo-luxe {
+  background: radial-gradient(circle at center,#1a1a1a 0%,#000 100%);
+  border-radius:50%;
+  padding:.3rem;
+  box-shadow:0 0 20px rgba(200,169,81,.25);
+}
+
+/* ---------- FORMS ---------- */
+.input{
+  @apply bg-black border border-zinc-700 rounded-xl px-4 py-3 text-sm text-zinc-100
+         focus:outline-none focus:border-zinc-500 placeholder-zinc-500;
+}
+.textarea{ @apply input h-28; }
+
+/* ---------- FAQ LUXE ---------- */
+.faq-item {
+  @apply border-b border-zinc-800 py-4 cursor-pointer;
+  transition: background .3s ease;
+}
+.faq-item:hover {
+  background: rgba(255, 215, 130, 0.02);
+}
+.faq-question {
+  @apply flex items-center justify-between text-zinc-200 text-lg font-medium;
+  font-family: "Playfair Display", serif;
+}
+.faq-answer {
+  @apply mt-2 text-sm text-zinc-400 overflow-hidden transition-all duration-500;
+  max-height:0;
+  opacity:0;
+}
+.faq-icon {
+  @apply text-[var(--gold)] transition-transform duration-500;
+}
+.faq-item.open .faq-icon { transform: rotate(45deg); }
+.faq-item.open .faq-answer {
+  max-height:400px;
+  opacity:1;
+  border-left: 1px solid rgba(200,169,81,0.25);
+  padding-left: 1rem;
+}
+
+/* ---------- ANIMATIONS UTILITAIRES ---------- */
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeInDown { animation: fadeInDown .3s ease forwards; }
+
+@keyframes slide {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+.animate-slide { display: flex; animation: slide 35s linear infinite; }
+
+/* ---------- WHATSAPP FLOAT LUXE ---------- */
+.whap-float {
+  position: fixed;
+  bottom: 26px;
+  right: 26px;
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%, #141414 0%, #0b0b0b 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  box-shadow: 0 0 25px rgba(200,169,81,0.25);
+  overflow: hidden;
+  cursor: pointer;
+  opacity: 0;
+  animation: fadeIn 1.5s ease forwards 1s;
+  transition: transform .4s ease, box-shadow .4s ease;
+}
+.whap-float:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 40px rgba(200,169,81,0.6);
+}
+.whap-float::before {
+  content: "";
+  position: absolute;
+  inset: -60%;
+  background: conic-gradient(
+    from 0deg,
+    rgba(200,169,81,0.6),
+    rgba(255,215,130,0.15),
+    rgba(200,169,81,0.6)
+  );
+  animation: spinGold 6s linear infinite;
+  filter: blur(35px);
+  z-index: 0;
+}
+.whap-float .icon {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  z-index: 2;
+  filter: drop-shadow(0 0 8px rgba(200,169,81,0.4));
+}
+
+/* Animations */
+@keyframes spinGold {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes fadeIn { to { opacity: 1; } }
+
+/* ---------- MOBILE ADAPTATION ---------- */
+@media (max-width: 768px) {
+  .whap-float {
+    width: 54px;
+    height: 54px;
+    bottom: 20px;
+    right: 20px;
+  }
+  .whap-float .icon {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+/* ---------- ANIMATION DU MENU MOBILE (slide doré) ---------- */
+@keyframes slideDownGold {
+  0% {
+    opacity: 0;
+    transform: translateY(-15px);
+    box-shadow: 0 0 0 rgba(200,169,81,0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    box-shadow: 0 4px 25px rgba(200,169,81,0.08);
+  }
+}
+
+.animate-slideDownGold {
+  animation: slideDownGold 0.45s cubic-bezier(0.25, 1, 0.3, 1) forwards;
+}
+
+/* ---------- HEADER SCROLL GLOW ---------- */
+header.scrolled {
+  box-shadow: 0 0 25px rgba(200,169,81,0.15),
+              0 0 50px rgba(200,169,81,0.08);
+  border-bottom-color: rgba(200,169,81,0.3) !important;
+  background: rgba(0,0,0,0.85);
+  transition: all 0.4s ease;
+}
+
+/* --- HEADER LUXE FLUIDE --- */
+header {
+  background: linear-gradient(to bottom, rgba(0,0,0,0.92), rgba(0,0,0,0.75));
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(200,169,81,0.15);
+  box-shadow: 0 0 20px rgba(0,0,0,0.6);
+  position: fixed;
+  width: 100%;
+  z-index: 50;
+  opacity: 0;
+  animation: headerFadeIn 1.2s ease forwards;
+  transition: all 0.6s ease;
+}
+
+/* Apparition douce au chargement */
+@keyframes headerFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Effet halo doré vivant au scroll */
+header.scrolled {
+  background: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.8));
+  box-shadow:
+    0 0 25px rgba(200,169,81,0.3),
+    0 0 60px rgba(200,169,81,0.12);
+  border-bottom-color: rgba(200,169,81,0.3);
+  animation: goldGlow 6s ease-in-out infinite alternate;
+}
+
+/* Animation du halo doré (subtile et lente) */
+@keyframes goldGlow {
+  0% {
+    box-shadow:
+      0 0 25px rgba(200,169,81,0.2),
+      0 0 60px rgba(200,169,81,0.08);
+  }
+  100% {
+    box-shadow:
+      0 0 45px rgba(200,169,81,0.35),
+      0 0 80px rgba(200,169,81,0.15);
+  }
+}
+
+
