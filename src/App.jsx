@@ -14,6 +14,8 @@ const fade = (d = 0) => ({
 const PHONE_DISPLAY = "06 49 79 53 46";
 const PHONE_E164 = "33649795346";
 const EMAIL = "Benjivantransport@gmail.com";
+const phone = "";
+
 
 /* ----------------- I18N ----------------- */
 const T = {
@@ -36,11 +38,40 @@ const T = {
       b1: "24h/24 • 7j/7",
       b2: "Prix fixés à l’avance",
       b3: "Accueil VIP",
+      b4: "Disposition à partir de 3h"
     },
-    services: "Nos Services",
-    s1: { title: "Mariages & Événements", text: "Chauffeur élégant et ponctuel pour vos cérémonies et soirées." },
-    s2: { title: "Soirées Privées", text: "Transport haut de gamme pour vos soirées et événements exclusifs." },
-    s3: { title: "Prestations Haut de Gamme", text: "Tenue pro, chargeurs, eau, confiseries, confidentialité." },
+  services: "Nos Services",
+s1: {
+  title: "Transferts Aéroports & Gares",
+  text: `Nous venons à vous.  
+Bénéficiez d’un transfert privé depuis ou vers Orly, Roissy-CDG, Beauvais  
+et toutes les gares parisiennes.  
+
+Accueil personnalisé, suivi de vol en temps réel  
+et confort absolu à bord de nos vans haut de gamme.`,
+  img: "/cdg.png"
+},
+
+s2: {
+  title: "Longs Trajets en France & en Europe",
+  text: `Voyagez sereinement à travers la France  
+et les grandes capitales européennes : Suisse, Belgique, Allemagne, Italie, Luxembourg…  
+
+Une expérience sur mesure, alliant élégance, confort et discrétion.`,
+  img: "/pays.png"
+},
+
+s3: {
+  title: "Chauffeur à Disposition — dès 3h",
+  text: `Un chauffeur privé à votre service  
+pour vos rendez-vous, séminaires ou événements.  
+
+Service flexible dès 3 heures,  
+dans un confort optimal et une discrétion totale.`,
+  img: "/start.png"
+},
+
+
 
     access: {
       title: "Accessible 24h/24",
@@ -52,7 +83,7 @@ const T = {
 
     fleet: "Notre flotte",
     fleetCards: [
-      { t: "Mercedes Classe V", d: "Cuir, confort, Wi-Fi, eau, sièges enfants sur demande.", img: "/classeV.png" },
+      { t: "Mercedes Classe V", d: "Cuir, confort, Wi-Fi,t eau, sièges enfants sur demande.", img: "/classeV.png" },
       { t: "Intérieur cuir premium", d: "Luxe discret, finitions parfaites et confort total.", img: "/cuir.png" },
       { t: "Van 7 places", d: "Idéal groupes, événements ou transferts VIP.", img: "/int.png" },
     ],
@@ -144,25 +175,53 @@ const T = {
       faq: "FAQ",
       contact: "Contact",
     },
-    hero: {
-      title: "Premium Private Chauffeur",
-      sub: "Travel with elegance and comfort in our high-end vans.",
-      cta1: "Book now",
-      cta2: "Our services",
-      b1: "24/7 service",
-      b2: "Fixed pricing",
-      b3: "VIP welcome",
-    },
+hero: {
+  title: "Premium Private Chauffeur",
+  sub: "Travel with elegance and comfort in our high-end vans.",
+  cta1: "Book now",
+  cta2: "Our services",
+  b1: "24/7 service",
+  b2: "Fixed pricing",
+  b3: "VIP welcome",
+  b4: "Available from 3h"
+},
     services: "Our Services",
-    s1: { title: "Weddings & Events", text: "Elegant and punctual chauffeur for your ceremonies and nights out." },
-    s2: { title: "Private Evenings", text: "High-end transport for exclusive events and galas." },
-    s3: { title: "Premium Amenities", text: "Professional attire, chargers, water, sweets, confidentiality." },
+s1: {
+  title: "Airport & Train Station Transfers",
+  text: `We come to you.  
+Private transfers to and from Orly, Roissy-CDG, Beauvais  
+and all Paris train stations.  
+
+Personalized welcome, real-time flight tracking,  
+and total comfort aboard our premium vans.`,
+  img: "/cdg.png"
+},
+
+s2: {
+  title: "Long-Distance Trips in France & Europe",
+  text: `Travel with peace of mind across France  
+and major European cities — Switzerland, Belgium, Germany, Italy, Luxembourg…  
+
+A tailored experience combining elegance, comfort, and discretion.`,
+  img: "/pays.png"
+},
+
+s3: {
+  title: "Private Chauffeur — from 3h",
+  text: `A professional driver at your disposal  
+for meetings, business days or private events.  
+
+Flexible booking from 3 hours,  
+with premium comfort and total discretion.`,
+  img: "/start.png"
+},
 
     access: {
       title: "Available 24/7",
       p1: "Instant confirmation for your booking",
       p2: "Fixed price upfront, no surprises whatever the traffic",
       p3: "Flight and train delay anticipation",
+      p4: "Available from a minimum of 3 hours",
       book: "Book",
     },
 
@@ -223,25 +282,66 @@ export default function App() {
   useEffect(() => localStorage.setItem("lang", lang), [lang]);
   const t = useMemo(() => T[lang], [lang]);
   const switchLang = () => setLang((p) => (p === "fr" ? "en" : "fr"));
-    const [menuOpen, setMenuOpen] = useState(false);
 
-    const [open, setOpen] = useState(-1);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [open, setOpen] = useState(-1);
 
-    useEffect(() => {
-  const handleScroll = () => {
-    const header = document.querySelector("header");
-    if (window.scrollY > 20) {
-      header?.classList.add("scrolled");
-    } else {
-      header?.classList.remove("scrolled");
-    }
+  useEffect(() => {
+    const handleScroll = () => {
+      const header = document.querySelector("header");
+      if (window.scrollY > 20) {
+        header?.classList.add("scrolled");
+      } else {
+        header?.classList.remove("scrolled");
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  /* ----------------- FORM SUBMIT ----------------- */
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+    const name = formData.get("Nom").trim();
+    const email = formData.get("Email").trim();
+const depart = formData.get("Depart").trim();
+const arrivee = formData.get("Arrivee").trim();
+
+    const date = formData.get("Date");
+    const pax = formData.get("Passagers");
+    const message = formData.get("Message").trim();
+
+    // --- Validation basique ---
+if (!name || !email || !depart || !arrivee || !date) {
+  alert("Merci de remplir tous les champs obligatoires.");
+  return;
+}
+
+    // --- Format du message WhatsApp ---
+    const text = `
+📩 Nouvelle demande de réservation :
+👤 Nom : ${name}
+📧 Email : ${email}
+🚗 Départ : ${depart}
+📍 Arrivée : ${arrivee}
+📞 Téléphone : ${phone}
+📅 Date : ${new Date(date).toLocaleString("fr-FR")}
+👥 Passagers : ${pax || "Non précisé"}
+💬 Message : ${message || "—"}
+`;
+
+    // --- Envoi WhatsApp ---
+    const url = `https://api.whatsapp.com/send?phone=${PHONE_E164}&text=${encodeURIComponent(text)}`;
+    window.open(url, "_blank");
   };
-  window.addEventListener("scroll", handleScroll);
-  return () => window.removeEventListener("scroll", handleScroll);
-}, []);
 
+  /* ----------------- RETURN ----------------- */
   return (
     <div className="min-h-screen bg-luxury">
+
+
 {/* HEADER LUXE */}
 <header className="fixed top-0 inset-x-0 z-50 backdrop-blur-xl bg-black/70 border-b border-zinc-800/60">
   <div className="section flex items-center justify-between h-20">
@@ -337,61 +437,207 @@ export default function App() {
 <div className="h-[200px]"></div>
 
 
-<section id="accueil" className="relative h-[88vh] flex items-center justify-center text-center overflow-hidden">
-
+{/* SECTION ACCUEIL + CONTACT — VERSION LUXE RESPONSIVE */}
+<section
+  id="accueil"
+  className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-black"
+>
   {/* IMAGE DE FOND */}
-  <img 
-    src="/van_paris.png" 
-    alt="Paris Van" 
-    className="absolute inset-0 w-full h-full object-cover brightness-[0.6] contrast-[1.2] saturate-[1.1]" 
-    />
+  <img
+    src="/van_paris.png"
+    alt="Van de luxe Paris"
+    className="absolute inset-0 w-full h-full object-cover brightness-[0.45] contrast-[1.15] saturate-[1.05]"
+  />
 
-  {/* VOILE GRADIENT DORÉ / NOIR */}
-  <div className="absolute inset-0 bg-gradient-to-b from-black/85 via-black/70 to-black/90" />
+  {/* DÉGRADÉ DE FOND */}
+  <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/80 to-black/95" />
 
-  {/* HALO DORÉ CENTRAL TRÈS SUBTIL */}
-  <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(200,169,81,0.05),transparent_70%)] pointer-events-none" />
+  {/* CONTENU CENTRAL */}
+  <div className="relative z-10 section py-20 grid lg:grid-cols-2 gap-24 items-center">
 
-  {/* CONTENU */}
-  <div className="section relative z-10">
-    <motion.div {...fade(.1)} className="max-w-3xl pt-32 mx-auto flex flex-col items-center text-center">
+{/* --- COLONNE GAUCHE (TEXTE) --- */}
+<motion.div {...fade(.1)} className="text-center lg:text-left max-w-xl mx-auto">
+  <h1 className="text-5xl sm:text-6xl font-playfair luxury-title mb-6 leading-tight">
+    {t.hero.title}
+  </h1>
+  <p className="text-zinc-300 text-lg mb-10 leading-relaxed">
+    {t.hero.sub}
+  </p>
 
-      <h1 className="text-5xl sm:text-6xl font-playfair luxury-title">
-        {t.hero.title}
-      </h1>
-      <p className="mt-5 text-zinc-300 text-lg">{t.hero.sub}</p>
+  <div className="flex flex-wrap justify-center lg:justify-start gap-3 mb-10">
+    <span className="badge"><Clock className="w-4 h-4 text-[var(--gold)]" /> {t.hero.b1}</span>
+    <span className="badge"><ShieldCheck className="w-4 h-4 text-[var(--gold)]" /> {t.hero.b2}</span>
+    <span className="badge"><Star className="w-4 h-4 text-[var(--gold)]" /> {t.hero.b3}</span>
+    <span className="badge"><Car className="w-4 h-4 text-[var(--gold)]" /> {t.hero.b4}</span>
+  </div>
 
-      <div className="mt-8 flex flex-wrap gap-4">
-        <a
-          href={`https://api.whatsapp.com/send?phone=${PHONE_E164}`}
-          target="_blank" rel="noreferrer"
-          className="btn-primary"
-        >
-          <Car className="w-5 h-5" /> {t.hero.cta1}
-        </a>
-        <a href="#services" className="btn-ghost">{t.hero.cta2}</a>
-      </div>
+  <a
+    href={`https://api.whatsapp.com/send?phone=${PHONE_E164}`}
+    target="_blank"
+    rel="noreferrer"
+    className="btn-primary inline-flex items-center gap-2 text-base px-8 py-4 mx-auto lg:mx-0"
+  >
+    <Car className="w-5 h-5" /> {t.hero.cta1}
+  </a>
+</motion.div>
 
-      <ul className="mt-8 grid sm:grid-cols-3 gap-3 text-sm">
-        <li className="badge"><Clock className="w-4 h-4 text-[var(--gold)]" /> {t.hero.b1}</li>
-        <li className="badge"><ShieldCheck className="w-4 h-4 text-[var(--gold)]" /> {t.hero.b2}</li>
-        <li className="badge"><Star className="w-4 h-4 text-[var(--gold)]" /> {t.hero.b3}</li>
-      </ul>
-    </motion.div>
+
+ {/* --- COLONNE DROITE (FORMULAIRE) --- */}
+<motion.div
+  {...fade(.2)}
+  className="relative bg-zinc-900/50 border border-zinc-800 rounded-[2rem] p-10 shadow-[0_0_65px_rgba(200,169,81,0.12)] backdrop-blur-md hover:shadow-[0_0_85px_rgba(200,169,81,0.22)] transition-all max-w-lg mx-auto w-full"
+>
+  {/* Halo doré subtil */}
+  <div className="absolute inset-0 rounded-[2rem] bg-[radial-gradient(circle_at_center,rgba(200,169,81,0.1),transparent_70%)] pointer-events-none animate-pulse-slow" />
+
+  <h2 className="text-3xl font-playfair luxury-title mb-4 text-center">
+    {t.contact}
+  </h2>
+  <p className="text-zinc-400 text-center mb-8 text-sm sm:text-base">
+    {t.contactLead}
+  </p>
+
+  {/* FORMULAIRE */}
+<form onSubmit={handleSubmit} className="grid sm:grid-cols-2 gap-4 text-sm relative z-10">
+  <input
+    type="text"
+    name="Nom"
+    placeholder={t.form.name}
+    className="input"
+    pattern="^[A-Za-zÀ-ÿ'\- ]{2,}$"
+    title="Veuillez entrer un nom valide"
+    required
+  />
+
+  <input
+  type="tel"
+  name="Telephone"
+  placeholder={lang === "fr" ? "Téléphone" : "Phone number"}
+  className="input"
+  required
+  pattern="^(\+?\d{1,3}[-.\s]?)?\d{6,14}$"
+  title={lang === "fr"
+    ? "Veuillez entrer un numéro valide (ex : +33612345678)"
+    : "Please enter a valid phone number (e.g. +33612345678)"
+  }
+/>
+
+  <input
+    type="email"
+    name="Email"
+    placeholder={t.form.email}
+    className="input"
+    required
+  />
+
+    <input
+    type="datetime-local"
+    name="Date"
+    placeholder={t.form.date}
+    className="input"
+    required
+  />
+
+<input
+  type="text"
+  name="Depart"
+  placeholder="Adresse de départ"
+  className="input"
+  required
+/>
+
+<input
+  type="text"
+  name="Arrivee"
+  placeholder="Adresse d’arrivée"
+  className="input"
+  required
+/>
+
+
+  <input
+    type="number"
+    name="Passagers"
+    placeholder={t.form.pax}
+    className="input"
+    min="1"
+    max="7"
+  />
+
+  <textarea
+    name="Message"
+    placeholder={t.form.msg}
+    className="textarea sm:col-span-2"
+  />
+
+  <button
+    type="submit"
+    className="btn-primary sm:col-span-2 py-4 text-base font-semibold hover:scale-[1.03] hover:shadow-[0_0_35px_rgba(200,169,81,0.4)]"
+  >
+    ✉️ {t.form.send}
+  </button>
+</form>
+
+
+  {/* INFOS CONTACT */}
+  <div className="mt-8 space-y-3 text-center text-zinc-300 relative z-10">
+    <a href={`tel:${PHONE_DISPLAY.replace(/\s/g, "")}`} className="flex items-center justify-center gap-2 hover:text-[var(--gold)] transition">
+      <Phone className="w-5 h-5 text-[var(--gold)]" /> {PHONE_DISPLAY}
+    </a>
+    <a href={`mailto:${EMAIL}`} className="flex items-center justify-center gap-2 hover:text-[var(--gold)] transition">
+      <Mail className="w-5 h-5 text-[var(--gold)]" /> {EMAIL}
+    </a>
+    <div className="flex items-center justify-center gap-2">
+      <MapPin className="w-5 h-5 text-[var(--gold)]" /> Paris & Europe
+    </div>
+  </div>
+</motion.div>
+
   </div>
 </section>
 
-      {/* SERVICES */}
-      <section id="services" className="py-20 bg-[#0e0e0e]">
-        <div className="section">
-          <motion.h2 {...fade()} className="text-4xl font-playfair luxury-title mb-10">{t.services}</motion.h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <ServiceCard img="/mariage.png" title={t.s1.title} text={t.s1.text} delay={.1}/>
-            <ServiceCard img="/fete.png" title={t.s2.title} text={t.s2.text} delay={.2}/>
-            <ServiceCard img="/dos.png" title={t.s3.title} text={t.s3.text} delay={.3}/>
-          </div>
-        </div>
-      </section>
+
+
+{/* SECTION NOS SERVICES — VERSION LUXE & PRO */}
+<section id="services" className="py-24 bg-[#0e0e0e]">
+  <div className="section">
+    <motion.h2
+      {...fade()}
+      className="text-4xl font-playfair luxury-title mb-16 text-center"
+    >
+      {t.services}
+    </motion.h2>
+
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
+
+      {/* 1️⃣ Transferts Aéroports & Gares */}
+      <ServiceCard
+        img={t.s1.img}
+        title={t.s1.title}
+        text={t.s1.text}
+        delay={0.1}
+      />
+
+      {/* 2️⃣ Longs Trajets France & Europe */}
+      <ServiceCard
+        img={t.s2.img}
+        title={t.s2.title}
+        text={t.s2.text}
+        delay={0.2}
+      />
+
+      {/* 3️⃣ Mise à disposition */}
+      <ServiceCard
+        img={t.s3.img}
+        title={t.s3.title}
+        text={t.s3.text}
+        delay={0.3}
+      />
+
+    </div>
+  </div>
+</section>
+
 
 {/* EUROPE + ACCESSIBLE 24/7 COMBO (aligné et stylé) */}
 <section id="europe" className="py-24 bg-black">
@@ -517,7 +763,7 @@ export default function App() {
         <li>✔️ Bouteilles d’eau individuelles</li>
         <li>✔️ Chargeurs iPhone & Android</li>
         <li>✔️ Confiseries & lingettes</li>
-        <li>✔️ Wi-Fi & tablette (sur demande)</li>
+        <li>✔️ Wi-Fi (sur demande)</li>
         <li>✔️ Siège enfant disponible</li>
         <li>✔️ Chauffeur discret, tenue élégante</li>
       </ul>
@@ -676,79 +922,6 @@ export default function App() {
   </div>
 </section>
 
-{/* SECTION CONTACT LUXE */}
-<section
-  id="contact"
-  className="section-appear relative py-28 bg-gradient-to-b from-black via-[#0e0e0e] to-black overflow-hidden"
->
-  {/* Halo subtil */}
-  <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(200,169,81,0.06),transparent_70%)] pointer-events-none" />
-
-  <div className="section relative z-10 grid lg:grid-cols-2 gap-16 items-center">
-    {/* --- Colonne gauche : infos de contact --- */}
-    <motion.div {...fade()}>
-      <h2 className="text-4xl font-playfair luxury-title mb-6">{t.contact}</h2>
-      <p className="text-zinc-400 mb-8 text-lg">{t.contactLead}</p>
-
-      <div className="space-y-5 text-zinc-300">
-        <div className="flex items-center gap-3">
-          <Phone className="w-5 h-5 text-[var(--gold)]" />
-          <a
-            href={`https://api.whatsapp.com/send?phone=${PHONE_E164}`}
-            target="_blank"
-            rel="noreferrer"
-            className="hover:text-[var(--gold)] transition"
-          >
-            {PHONE_DISPLAY}
-          </a>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <Mail className="w-5 h-5 text-[var(--gold)]" />
-          <a
-            href={`mailto:${EMAIL}`}
-            className="hover:text-[var(--gold)] transition"
-          >
-            {EMAIL}
-          </a>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <MapPin className="w-5 h-5 text-[var(--gold)]" />
-          <span>Paris & Europe</span>
-        </div>
-      </div>
-    </motion.div>
-
-    {/* --- Colonne droite : formulaire --- */}
-    <motion.form
-      {...fade(.15)}
-      className="bg-zinc-900/60 border border-zinc-800 rounded-3xl p-8 shadow-[0_0_35px_rgba(200,169,81,0.1)] backdrop-blur-md hover:shadow-[0_0_55px_rgba(200,169,81,0.15)] transition"
-    >
-      <div className="grid sm:grid-cols-2 gap-4">
-        <input type="text" placeholder={t.form.name} className="input" />
-        <input type="email" placeholder={t.form.email} className="input" />
-      </div>
-
-      <div className="grid sm:grid-cols-2 gap-4 mt-4">
-        <input type="text" placeholder={t.form.route} className="input" />
-        <input type="text" placeholder={t.form.date} className="input" />
-      </div>
-
-      <div className="grid sm:grid-cols-2 gap-4 mt-4">
-        <input type="text" placeholder={t.form.pax} className="input" />
-        <textarea placeholder={t.form.msg} className="textarea sm:col-span-2" />
-      </div>
-
-      <button
-        type="submit"
-        className="btn-primary w-full mt-6 py-4 text-base font-semibold hover:scale-[1.02] hover:shadow-[0_0_35px_rgba(200,169,81,0.4)]"
-      >
-        ✉️ {t.form.send}
-      </button>
-    </motion.form>
-  </div>
-</section>
 
 
       {/* WHATSAPP FLOAT – “lave d’or” animée */}
