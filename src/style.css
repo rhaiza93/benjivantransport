@@ -307,34 +307,181 @@ header {
 
 /* Effet halo doré vivant au scroll */
 header.scrolled {
+  
   background: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.8));
+  
   box-shadow:
+  
     0 0 25px rgba(200,169,81,0.3),
+    
     0 0 60px rgba(200,169,81,0.12);
+    
   border-bottom-color: rgba(200,169,81,0.3);
+  
   animation: goldGlow 6s ease-in-out infinite alternate;
+  
 }
 
+
+
 /* Animation du halo doré (subtile et lente) */
+
 @keyframes goldGlow {
+  
   0% {
+    
     box-shadow:
+    
       0 0 25px rgba(200,169,81,0.2),
+      
       0 0 60px rgba(200,169,81,0.08);
+      
   }
+  
   100% {
+    
     box-shadow:
+    
       0 0 45px rgba(200,169,81,0.35),
+      
       0 0 80px rgba(200,169,81,0.15);
+      
   }
+  
 }
+
+
+
 
 
 @keyframes pulse-slow {
+  
   0% { opacity: 0.7; transform: scale(1); }
+  
   50% { opacity: 1; transform: scale(1.02); }
+  
   100% { opacity: 0.7; transform: scale(1); }
+  
 }
+
 .animate-pulse-slow {
+  
   animation: pulse-slow 8s ease-in-out infinite;
+  
+}
+
+
+
+@keyframes gradient-move {
+  
+  0% { transform: translateX(-100%); opacity: 0.2; }
+  
+  50% { transform: translateX(100%); opacity: 1; }
+  
+  100% { transform: translateX(200%); opacity: 0; }
+  
+}
+
+
+
+.animate-gradient-move {
+  
+  animation: gradient-move 3s linear infinite;
+  
+}
+
+
+@keyframes gradient-sweep {
+  0% { transform: translateX(-100%); opacity: 0.2; }
+  50% { transform: translateX(100%); opacity: 0.8; }
+  100% { transform: translateX(200%); opacity: 0; }
+}
+.animate-gradient-sweep {
+  animation: gradient-sweep 4s ease-in-out infinite;
+}
+
+@keyframes glow-text {
+  0%, 100% { filter: drop-shadow(0 0 5px rgba(200,169,81,0.4)); }
+  50% { filter: drop-shadow(0 0 12px rgba(200,169,81,0.8)); }
+}
+.animate-glow-text {
+  animation: glow-text 3.5s ease-in-out infinite;
+}
+
+@keyframes logo-glow {
+  0% { opacity: 0; transform: scale(0.8); filter: blur(10px); }
+  50% { opacity: 1; transform: scale(1.05); filter: blur(0px); }
+  100% { transform: scale(1); }
+}
+.logo-glow {
+  animation: logo-glow 1.2s ease-out;
+}
+.btn-primary:active {
+  box-shadow: 0 0 25px rgba(200,169,81,0.5), inset 0 0 10px rgba(200,169,81,0.3);
+  transform: scale(0.98);
+}
+body {
+  cursor: url('/cursor-gold.png'), auto;
+}
+a:hover, button:hover {
+  cursor: url('/cursor-gold-hover.png'), pointer;
+}
+
+header.scrolled {
+  backdrop-filter: blur(18px);
+  background: rgba(10, 10, 10, 0.85);
+  box-shadow: 0 4px 25px rgba(200,169,81,0.15);
+}
+
+/* -------- EFFETS TESLA SUR BOUTONS -------- */
+.btn-primary {
+  transition: transform 0.5s ease, box-shadow 0.4s ease;
+}
+
+.btn-primary:hover {
+  transform: scale(1.04);
+  box-shadow: 0 0 25px rgba(200,169,81,0.35);
+}
+
+.btn-primary:active {
+  transform: scale(0.96);
+}
+
+.btn-ghost {
+  transition: all 0.4s ease;
+}
+
+.btn-ghost:hover {
+  color: var(--gold);
+  border-color: var(--gold);
+  box-shadow: 0 0 10px rgba(200,169,81,0.25);
+}
+/* -------- BADGES PREMIUM -------- */
+.badge {
+  transition: all 0.4s ease;
+}
+
+.badge:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 0 15px rgba(200,169,81,0.3);
+}
+
+.icon-gold {
+  filter: drop-shadow(0 0 6px rgba(200,169,81,0.6));
+  transition: all 0.3s ease;
+}
+.icon-gold:active {
+  transform: scale(1.15);
+  filter: drop-shadow(0 0 12px rgba(200,169,81,0.9));
+}
+.luxury-title {
+  background: linear-gradient(90deg, #fff, var(--gold), #fff);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 5s linear infinite;
+}
+@keyframes shimmer {
+  0% { background-position: 200% center; }
+  100% { background-position: -200% center; }
 }

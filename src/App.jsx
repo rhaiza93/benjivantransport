@@ -83,7 +83,7 @@ dans un confort optimal et une discrétion totale.`,
 
     fleet: "Notre flotte",
     fleetCards: [
-      { t: "Mercedes Classe V", d: "Cuir, confort, Wi-Fi,t eau, sièges enfants sur demande.", img: "/classeV.png" },
+      { t: "Mercedes Classe V", d: "Cuir, confort, Wi-Fi, eau, sièges enfants sur demande.", img: "/classeV.png" },
       { t: "Intérieur cuir premium", d: "Luxe discret, finitions parfaites et confort total.", img: "/cuir.png" },
       { t: "Van 7 places", d: "Idéal groupes, événements ou transferts VIP.", img: "/int.png" },
     ],
@@ -124,7 +124,7 @@ dans un confort optimal et une discrétion totale.`,
       {
         q: "Que se passe-t-il si mon vol est en retard ?",
         a:
-          "Nous suivons votre vol en temps réel via numéro et compagnie. L’heure de prise en charge est automatiquement ajustée, sans frais supplémentaires.",
+"Nous suivons votre vol en temps réel via numéro et compagnie. L’heure de prise en charge est automatiquement ajustée, des frais d’attente peuvent s’appliquer au-delà d’une heure de retard.",
       },
       {
         q: "Quels services sont inclus à bord ?",
@@ -261,7 +261,7 @@ with premium comfort and total discretion.`,
     faqTitle: "Frequently Asked Questions",
     faqs: [
       { q: "How do I book quickly?", a: "WhatsApp or call " + PHONE_DISPLAY + ". We confirm with a fixed price within minutes." },
-      { q: "What if my flight is delayed?", a: "We track it in real time and adjust pick-up automatically at no extra cost." },
+      { q: "What if my flight is delayed?", a: "We track your flight in real time using its number and airline. The pick-up time is automatically adjusted — waiting fees may apply for delays exceeding one hour." },
       { q: "What amenities are included?", a: "Water, iPhone/Android chargers, sweets, Wi-Fi (when available), child seat on request." },
       { q: "Do you offer on-hold/hourly service?", a: "Yes — half day, full day or evening. Clear transparent billing." },
       { q: "How is pricing set?", a: "Upfront fixed price per route or per hour. No surprises due to traffic or detours." },
@@ -298,6 +298,13 @@ export default function App() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const vibrate = (duration = 30) => {
+  if ("vibrate" in navigator) {
+    navigator.vibrate(duration);
+  }
+};
+
 
   /* ----------------- FORM SUBMIT ----------------- */
   const handleSubmit = (e) => {
@@ -343,21 +350,37 @@ if (!name || !email || !depart || !arrivee || !date) {
 
 
 {/* HEADER LUXE */}
-<header className="fixed top-0 inset-x-0 z-50 backdrop-blur-xl bg-black/70 border-b border-zinc-800/60">
-  <div className="section flex items-center justify-between h-20">
+<header className="fixed top-0 inset-x-0 z-50 backdrop-blur-xl bg-black/80 border-b border-zinc-800/60 shadow-[0_8px_30px_rgba(0,0,0,0.35)]">
+  <div className="section flex items-center justify-between h-20 px-4 sm:px-8">
+
+
     {/* --- Bloc gauche : Logo + Nom --- */}
-    <div className="flex items-center gap-4">
-      <a href="#accueil" className="flex items-center gap-3 group">
-        <img
-          src="/logo-benji.png"
-          alt="Logo BenjiVanTransport"
-          className="h-14 w-auto object-contain rounded-full shadow-[0_0_20px_rgba(200,169,81,0.25)] group-hover:scale-105 transition-transform duration-300"
-        />
-        <span className="font-playfair text-xl sm:text-2xl text-zinc-100 tracking-wide group-hover:text-[var(--gold)] transition">
-          BenjiVan&nbsp;<span className="text-[var(--gold)]">Transport</span>
-        </span>
-      </a>
-    </div>
+<div className="flex items-center gap-3 sm:gap-4 max-w-[70%] sm:max-w-none overflow-hidden">
+  <a
+    href="#accueil"
+    className="flex items-center gap-2 sm:gap-3 group relative"
+  >
+<div className="relative flex items-center justify-center">
+  <img
+    src="/logo-benji.png"
+    alt="Logo BenjiVanTransport"
+    className="h-[3.4rem] sm:h-[4.5rem] w-auto object-contain filter drop-shadow-[0_4px_6px_rgba(0,0,0,0.6)] brightness-[1.1] contrast-[1.15] saturate-[1.1] scale-[1.12] hover:scale-[1.18] transition-transform duration-500"
+  />
+</div>
+
+
+
+
+    {/* Nom de marque */}
+    <span className="relative font-playfair text-base sm:text-xl md:text-2xl tracking-wide text-transparent bg-gradient-to-r from-[#fff] via-[var(--gold)] to-[#fff] bg-clip-text animate-text-shine whitespace-nowrap">
+      <span className="font-semibold">BenjiVan</span>
+      &nbsp;<span className="text-[var(--gold)] font-medium">Transport</span>
+      <span className="absolute -bottom-[2px] left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[var(--gold)] to-transparent opacity-0 group-hover:opacity-100 animate-glow-line" />
+    </span>
+  </a>
+</div>
+
+
 
     {/* --- Navigation Desktop --- */}
     <nav className="hidden xl:flex items-center gap-10 text-sm text-zinc-400 font-medium">
@@ -456,7 +479,11 @@ if (!name || !email || !depart || !arrivee || !date) {
   <div className="relative z-10 section py-20 grid lg:grid-cols-2 gap-24 items-center">
 
 {/* --- COLONNE GAUCHE (TEXTE) --- */}
-<motion.div {...fade(.1)} className="text-center lg:text-left max-w-xl mx-auto">
+<motion.div
+  {...fade(.1)}
+  className="text-center max-w-md mx-auto px-4 sm:px-0"
+>
+
   <h1 className="text-5xl sm:text-6xl font-playfair luxury-title mb-6 leading-tight">
     {t.hero.title}
   </h1>
@@ -485,113 +512,80 @@ if (!name || !email || !depart || !arrivee || !date) {
  {/* --- COLONNE DROITE (FORMULAIRE) --- */}
 <motion.div
   {...fade(.2)}
-  className="relative bg-zinc-900/50 border border-zinc-800 rounded-[2rem] p-10 shadow-[0_0_65px_rgba(200,169,81,0.12)] backdrop-blur-md hover:shadow-[0_0_85px_rgba(200,169,81,0.22)] transition-all max-w-lg mx-auto w-full"
+  className="relative bg-gradient-to-b from-black via-zinc-950 to-black border border-zinc-800 rounded-[2rem] p-10 shadow-[0_0_80px_rgba(200,169,81,0.15)] backdrop-blur-md hover:shadow-[0_0_110px_rgba(200,169,81,0.25)] transition-all max-w-lg mx-auto w-full overflow-hidden"
 >
-  {/* Halo doré subtil */}
-  <div className="absolute inset-0 rounded-[2rem] bg-[radial-gradient(circle_at_center,rgba(200,169,81,0.1),transparent_70%)] pointer-events-none animate-pulse-slow" />
+  {/* Halo interne */}
+  <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(200,169,81,0.06),transparent_80%)] animate-pulse-slow pointer-events-none" />
 
-  <h2 className="text-3xl font-playfair luxury-title mb-4 text-center">
+  {/* --- TITRE --- */}
+  <h2 className="text-3xl font-playfair luxury-title mb-3 text-center">
     {t.contact}
   </h2>
-  <p className="text-zinc-400 text-center mb-8 text-sm sm:text-base">
+  <p className="text-zinc-400 text-center mb-10 text-sm sm:text-base">
     {t.contactLead}
   </p>
 
-  {/* FORMULAIRE */}
-<form onSubmit={handleSubmit} className="grid sm:grid-cols-2 gap-4 text-sm relative z-10">
-  <input
-    type="text"
-    name="Nom"
-    placeholder={t.form.name}
-    className="input"
-    pattern="^[A-Za-zÀ-ÿ'\- ]{2,}$"
-    title="Veuillez entrer un nom valide"
-    required
-  />
+  {/* --- COORDONNÉES TESLA LUXE --- */}
+  <div className="relative z-10 mb-10 flex flex-col items-center gap-5 text-zinc-300">
 
-  <input
-  type="tel"
-  name="Telephone"
-  placeholder={lang === "fr" ? "Téléphone" : "Phone number"}
-  className="input"
-  required
-  pattern="^(\+?\d{1,3}[-.\s]?)?\d{6,14}$"
-  title={lang === "fr"
-    ? "Veuillez entrer un numéro valide (ex : +33612345678)"
-    : "Please enter a valid phone number (e.g. +33612345678)"
-  }
-/>
+    {/* Numéro de téléphone — effet Tesla Lounge */}
+<motion.a
+  {...fade(.1)}
+  href={`tel:${PHONE_DISPLAY.replace(/\s/g, "")}`}
+  onClick={() => vibrate(35)}
+  className="group relative inline-flex items-center justify-center gap-3 text-[1.6rem] font-semibold tracking-wide text-white"
+>
 
-  <input
-    type="email"
-    name="Email"
-    placeholder={t.form.email}
-    className="input"
-    required
-  />
+      <div className="absolute -inset-x-16 -inset-y-3 bg-[linear-gradient(90deg,transparent,rgba(200,169,81,0.25),transparent)] blur-2xl opacity-60 animate-gradient-sweep" />
+      <div className="absolute inset-x-0 -bottom-[2px] h-[1px] bg-gradient-to-r from-transparent via-[var(--gold)] to-transparent blur-[1px]" />
+      <Phone className="w-6 h-6 icon-gold" />
 
-    <input
-    type="datetime-local"
-    name="Date"
-    placeholder={t.form.date}
-    className="input"
-    required
-  />
+      <span className="relative z-10 bg-gradient-to-r from-[var(--gold)] via-[#fff] to-[var(--gold)] bg-clip-text text-transparent animate-glow-text">
+        {PHONE_DISPLAY}
+      </span>
+    </motion.a>
 
-<input
-  type="text"
-  name="Depart"
-  placeholder="Adresse de départ"
-  className="input"
-  required
-/>
-
-<input
-  type="text"
-  name="Arrivee"
-  placeholder="Adresse d’arrivée"
-  className="input"
-  required
-/>
-
-
-  <input
-    type="number"
-    name="Passagers"
-    placeholder={t.form.pax}
-    className="input"
-    min="1"
-    max="7"
-  />
-
-  <textarea
-    name="Message"
-    placeholder={t.form.msg}
-    className="textarea sm:col-span-2"
-  />
-
-  <button
-    type="submit"
-    className="btn-primary sm:col-span-2 py-4 text-base font-semibold hover:scale-[1.03] hover:shadow-[0_0_35px_rgba(200,169,81,0.4)]"
-  >
-    ✉️ {t.form.send}
-  </button>
-</form>
-
-
-  {/* INFOS CONTACT */}
-  <div className="mt-8 space-y-3 text-center text-zinc-300 relative z-10">
-    <a href={`tel:${PHONE_DISPLAY.replace(/\s/g, "")}`} className="flex items-center justify-center gap-2 hover:text-[var(--gold)] transition">
-      <Phone className="w-5 h-5 text-[var(--gold)]" /> {PHONE_DISPLAY}
-    </a>
-    <a href={`mailto:${EMAIL}`} className="flex items-center justify-center gap-2 hover:text-[var(--gold)] transition">
-      <Mail className="w-5 h-5 text-[var(--gold)]" /> {EMAIL}
-    </a>
-    <div className="flex items-center justify-center gap-2">
-      <MapPin className="w-5 h-5 text-[var(--gold)]" /> Paris & Europe
-    </div>
+    {/* Email — discret et clean */}
+    <motion.a
+      {...fade(.15)}
+      href={`mailto:${EMAIL}`}
+      className="flex items-center justify-center gap-2 text-sm text-zinc-400 hover:text-[var(--gold)] transition-all duration-300"
+    >
+      <Mail className="w-4 h-4 text-[var(--gold)]" /> {EMAIL}
+    </motion.a>
   </div>
+
+  {/* --- FORMULAIRE --- */}
+<form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm relative z-10 px-2 sm:px-0">
+
+    <input type="text" name="Nom" placeholder={t.form.name} className="input" required />
+    <input
+      type="tel"
+      name="Telephone"
+      placeholder={lang === "fr" ? "Téléphone" : "Phone number"}
+      className="input"
+      required
+      pattern="^(\+?\d{1,3}[-.\s]?)?\d{6,14}$"
+    />
+    <input type="email" name="Email" placeholder={t.form.email} className="input" required />
+    <input type="datetime-local" name="Date" className="input" required />
+    <input type="text" name="Depart" placeholder="Adresse de départ" className="input" required />
+    <input type="text" name="Arrivee" placeholder="Adresse d’arrivée" className="input" required />
+    <input type="number" name="Passagers" placeholder={t.form.pax} className="input" min="1" max="7" />
+    <textarea name="Message" placeholder={t.form.msg} className="textarea sm:col-span-2" />
+<button
+  type="submit"
+  onClick={() => vibrate(40)}
+  className="btn-primary sm:col-span-2 py-4 text-base font-semibold hover:scale-[1.03] hover:shadow-[0_0_40px_rgba(200,169,81,0.45)]"
+>
+
+      ✉️ {t.form.send}
+    </button>
+  </form>
 </motion.div>
+
+
+
 
   </div>
 </section>
@@ -925,13 +919,16 @@ if (!name || !email || !depart || !arrivee || !date) {
 
 
       {/* WHATSAPP FLOAT – “lave d’or” animée */}
-      <a
-        href={`https://api.whatsapp.com/send?phone=${PHONE_E164}`}
-        target="_blank" rel="noreferrer"
-        aria-label="WhatsApp"
-        title="WhatsApp"
-        className="whap-float"
-      >
+<a
+  href={`https://api.whatsapp.com/send?phone=${PHONE_E164}`}
+  target="_blank"
+  rel="noreferrer"
+  aria-label="WhatsApp"
+  title="WhatsApp"
+  className="whap-float"
+  onClick={() => vibrate(50)}
+>
+
         <span className="lava"></span>
         <img src="/logo_whap.svg" alt="WhatsApp" className="icon" />
       </a>
