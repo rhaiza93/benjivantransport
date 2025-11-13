@@ -26,7 +26,7 @@ const T = {
       fleet: "Véhicules",
       dedicated: "Chauffeur",
       europe: "Destinations",
-      about: "À propos?",
+      about: "Présentation",
       faq: "FAQ",
       contact: "Contact",
     },
@@ -108,7 +108,7 @@ dans un confort optimal et une discrétion totale.`,
 
     about: "À propos",
     aboutText:
-      "BenjiVanTransport propose un service de chauffeur privé premium à Paris et en Île-de-France. Ponctualité, confort et discrétion sont nos maîtres mots. Pour vos événements, transferts ou déplacements professionnels, profitez d’un trajet élégant et serein à bord de nos véhicules.",
+      "Benji Van Transport propose un service de chauffeur privé premium à Paris et en Île-de-France. Ponctualité, confort et discrétion sont nos maîtres mots. Pour vos événements, transferts ou déplacements professionnels, profitez d’un trajet élégant et serein à bord de nos véhicules.",
     reviewsTitle: "Ils nous font confiance",
     reviewAkim:
       "“Service impeccable ! Chauffeur professionnel, véhicule irréprochable, gestion parfaite des horaires. Je recommande à 100 %.”",
@@ -156,7 +156,7 @@ dans un confort optimal et une discrétion totale.`,
       route: "Départ → Arrivée",
       date: "Date & heure",
       pax: "Passagers",
-      msg: "Message",
+      msg: "Informations complémentaires",
       send: "Envoyer la demande",
     },
     footer: "Tous droits réservés.",
@@ -307,42 +307,40 @@ export default function App() {
 
 
   /* ----------------- FORM SUBMIT ----------------- */
-  const handleSubmit = (e) => {
-    e.preventDefault();
+const handleSubmit = (e) => {
+  e.preventDefault();
 
-    const formData = new FormData(e.target);
-    const name = formData.get("Nom").trim();
-    const email = formData.get("Email").trim();
-const depart = formData.get("Depart").trim();
-const arrivee = formData.get("Arrivee").trim();
+  const formData = new FormData(e.target);
+  const name = formData.get("Nom").trim();
+  const email = formData.get("Email").trim();
+  const depart = formData.get("Depart").trim();
+  const arrivee = formData.get("Arrivee").trim();
+  const date = formData.get("Date");
+  const pax = formData.get("Passagers");
+  const message = formData.get("Message").trim();
 
-    const date = formData.get("Date");
-    const pax = formData.get("Passagers");
-    const message = formData.get("Message").trim();
+  // Validation
+  if (!name || !email || !depart || !arrivee || !date) {
+    alert("Merci de remplir tous les champs obligatoires.");
+    return;
+  }
 
-    // --- Validation basique ---
-if (!name || !email || !depart || !arrivee || !date) {
-  alert("Merci de remplir tous les champs obligatoires.");
-  return;
-}
+  // Format du mail
+  const body = `
+Nouvelle demande de réservation :
 
-    // --- Format du message WhatsApp ---
-    const text = `
-📩 Nouvelle demande de réservation :
-👤 Nom : ${name}
-📧 Email : ${email}
-🚗 Départ : ${depart}
-📍 Arrivée : ${arrivee}
-📞 Téléphone : ${phone}
-📅 Date : ${new Date(date).toLocaleString("fr-FR")}
-👥 Passagers : ${pax || "Non précisé"}
-💬 Message : ${message || "—"}
-`;
+Nom : ${name}
+Email : ${email}
+Départ : ${depart}
+Arrivée : ${arrivee}
+Date : ${new Date(date).toLocaleString("fr-FR")}
+Passagers : ${pax || "Non précisé"}
+Message : ${message || "—"}
+  `;
 
-    // --- Envoi WhatsApp ---
-    const url = `https://api.whatsapp.com/send?phone=${PHONE_E164}&text=${encodeURIComponent(text)}`;
-    window.open(url, "_blank");
-  };
+  // Envoi Email
+  window.location.href = `mailto:${EMAIL}?subject=Nouvelle demande de réservation&body=${encodeURIComponent(body)}`;
+};
 
   /* ----------------- RETURN ----------------- */
   return (
@@ -373,7 +371,7 @@ if (!name || !email || !depart || !arrivee || !date) {
 
     {/* Nom de marque */}
     <span className="relative font-playfair text-base sm:text-xl md:text-2xl tracking-wide text-transparent bg-gradient-to-r from-[#fff] via-[var(--gold)] to-[#fff] bg-clip-text animate-text-shine whitespace-nowrap">
-      <span className="font-semibold">BenjiVan</span>
+      <span className="font-semibold">Benji Van</span>
       &nbsp;<span className="text-[var(--gold)] font-medium">Transport</span>
       <span className="absolute -bottom-[2px] left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[var(--gold)] to-transparent opacity-0 group-hover:opacity-100 animate-glow-line" />
     </span>
@@ -383,12 +381,13 @@ if (!name || !email || !depart || !arrivee || !date) {
 
 
     {/* --- Navigation Desktop --- */}
-    <nav className="hidden xl:flex items-center gap-10 text-sm text-zinc-400 font-medium">
+    <nav className="hidden xl:flex items-center gap-10 text-sm text-zinc-400 font-medium ml-6">
+
       {[
         { id: "accueil", label: t.nav.home },
         { id: "services", label: t.nav.services },
         { id: "vehicules", label: t.nav.fleet },
-        { id: "dedie", label: t.nav.dedicated },
+        { id: "chauffeurs", label: t.nav.dedicated },
         { id: "europe", label: t.nav.europe },
         { id: "apropos", label: t.nav.about },
         { id: "faq", label: t.nav.faq },
@@ -407,12 +406,13 @@ if (!name || !email || !depart || !arrivee || !date) {
 
     {/* --- Bouton Langue --- */}
     <div className="flex items-center gap-3">
-      <button
-        onClick={switchLang}
-        className="btn-ghost text-xs px-3 py-2 border-zinc-700 hover:border-[var(--gold)] hover:text-[var(--gold)] transition"
-      >
-        {t.langBtn}
-      </button>
+<button
+  onClick={switchLang}
+  className="btn-ghost text-xs px-3 py-2 ml-4 border-zinc-700 hover:border-[var(--gold)] hover:text-[var(--gold)] transition"
+>
+  {t.langBtn}
+</button>
+
 
       {/* --- Burger Mobile --- */}
       <button
