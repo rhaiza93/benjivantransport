@@ -819,7 +819,8 @@ Message : ${message || "—"}
         className="flex gap-8 animate-slide"
         initial={{ x: 0 }}
         animate={{ x: ["0%", "-50%"] }}
-        transition={{ repeat: Infinity, duration: 35, ease: "linear" }}
+        transition={{ repeat: Infinity, duration: 17, ease: "linear" }}
+
       >
         {[...Array(2)].flatMap(() => [
           {
